@@ -354,7 +354,7 @@ brew install kubectl helm
 
 **Permissions required:** EKS, VPC, IAM, Route 53, ACM, WAF, AMP, Amazon Managed Grafana
 
-**Route 53 hosted zone** for your domain (this project uses `devopsengineeracademy.com`)
+**Route 53 hosted zone** for your domain (this project uses `guiipedroso.com`)
 
 ### Step 1 — Bootstrap: State Backend
 
@@ -558,8 +558,8 @@ tags = {
 ## 🔮 Roadmap
 
 * [x] Grafana OSS no cluster via Helm com IRSA → Amazon Managed Prometheus (`grafana.guiipedroso.com`)
-* [ ] Apache Airflow on EKS (`airflow.devopsengineeracademy.com`)
-* [ ] Wildcard ACM certificate (`*.devopsengineeracademy.com`)
+* [ ] Apache Airflow on EKS (`airflow.guiipedroso.com`)
+* [ ] Wildcard ACM certificate (`*.guiipedroso.com`)
 * [ ] Spot instance support in Karpenter NodePool
 * [ ] CI/CD pipeline for stack deployment (GitHub Actions)
 * [ ] Horizontal Pod Autoscaler (HPA) examples
