@@ -1,0 +1,44 @@
+# Terraform local state and lock files
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Terraform working directories (downloaded providers and modules)
+**/.terraform/
+
+# Terraform variable files that may contain secrets
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Override files (local developer overrides)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Sensitive CLI outputs
+*.plan
+*.out
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Folders to exclude from portfolio (course reference, personal notes)
+eks-express-iac-reference/
+examples_readme/
+my_notes.md

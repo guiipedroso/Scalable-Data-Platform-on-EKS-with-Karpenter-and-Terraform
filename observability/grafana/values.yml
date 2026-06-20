@@ -1,0 +1,72 @@
+grafana.ini:
+  server:
+    root_url: "https://${hostname}"
+
+adminUser: admin
+adminPassword: "${admin_password}"
+
+serviceAccount:
+  create: true
+  name: grafana
+  annotations:
+    eks.amazonaws.com/role-arn: "${irsa_role_arn}"
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Amazon Managed Prometheus
+        type: prometheus
+        url: "${proxy_datasource_url}"
+        isDefault: true
+        jsonData:
+          httpMethod: POST
+
+# The EKS IRSA webhook automatically injects into ALL pod containers:
+#   - AWS_ROLE_ARN and AWS_WEB_IDENTITY_TOKEN_FILE env vars
+#   - aws-iam-token projected volume mounted at /var/run/secrets/eks.amazonaws.com/serviceaccount
+# The sidecar receives those credentials at pod creation without any explicit volumeMount here.
+# Defining the volume manually would conflict with the webhook injection.
+extraContainers: |
+  - name: sigv4-proxy
+    image: public.ecr.aws/aws-observability/aws-sigv4-proxy:latest
+    args:
+      - --name
+      - aps
+      - --region
+      - ${region}
+      - --host
+      - aps-workspaces.${region}.amazonaws.com
+      - --port
+      - :8005
+    ports:
+      - containerPort: 8005
+
+ingress:
+  enabled: true
+  ingressClassName: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: "${certificate_arn}"
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/success-codes: "200"
+    external-dns.alpha.kubernetes.io/hostname: "${hostname}"
+  hosts:
+    - "${hostname}"
+  tls:
+    - secretName: grafana-tls
+      hosts:
+        - "${hostname}"
+
+persistence:
+  enabled: false
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi

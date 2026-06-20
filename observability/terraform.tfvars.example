@@ -1,0 +1,4 @@
+# Copy this file to terraform.tfvars and fill in your values.
+# terraform.tfvars is excluded from version control (.gitignore).
+
+grafana_admin_password = "change-me-before-apply"
