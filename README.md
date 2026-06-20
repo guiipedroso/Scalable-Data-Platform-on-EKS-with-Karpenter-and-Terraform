@@ -60,14 +60,14 @@ Two Grafana strategies are maintained in this repository:
 
 | Strategy | Deployment | Purpose |
 |---|---|---|
-| **Grafana OSS** (Helm, in-cluster) | `grafana.devopsengineeracademy.com` | Live demo — validated end-to-end in this environment |
+| **Grafana OSS** (Helm, in-cluster) | `grafana.guiipedroso.com` | Live demo — validated end-to-end in this environment |
 | **Amazon Managed Grafana** (Terraform) | Managed AWS service | Production reference architecture — kept as IaC in `grafana.workspace.tf` |
 
 The managed Grafana configuration is preserved as an architectural reference. For production deployments it is preferred over in-cluster Grafana: it remains available even if the EKS cluster goes down, and it integrates natively with IAM Identity Center (SSO).
 
 ### Grafana Dashboards (Validated in AWS)
 
-Grafana OSS is exposed at `https://grafana.devopsengineeracademy.com`, querying **Amazon Managed Prometheus** via a SigV4 proxy sidecar with IRSA. The **Node Exporter Full** dashboard below shows live metrics from EKS worker nodes scraped end-to-end.
+Grafana OSS is exposed at `https://grafana.guiipedroso.com`, querying **Amazon Managed Prometheus** via a SigV4 proxy sidecar with IRSA. The **Node Exporter Full** dashboard below shows live metrics from EKS worker nodes scraped end-to-end.
 
 ![Grafana — Node Exporter Full overview](docs/grafana_1.png)
 
@@ -83,7 +83,7 @@ Grafana OSS is exposed at `https://grafana.devopsengineeracademy.com`, querying 
 
 ### Networking
 
-![VPC Topology](docs/aws_cloud.png)
+![VPC Topology](docs/networking.png)
 
 Multi-AZ VPC in `us-east-1` with public subnets for the ALB and NAT Gateways, private subnets for EKS worker nodes, and dedicated observability subnets for the Prometheus scraper and Grafana.
 
@@ -229,7 +229,7 @@ eks_project/
 ├── .terraform-version                   # Pins Terraform CLI to 1.15.6 (tfenv)
 ├── docs/
 │   ├── arch.png                         # Full architecture diagram
-│   ├── aws_cloud.png                    # VPC/networking topology
+│   ├── networking.png                   # VPC/networking topology
 │   ├── vpc_config.png                   # VPC logical model
 │   ├── eks_scraper.png                  # Observability metrics pipeline
 │   ├── grafana_1.png                    # Grafana Node Exporter Full — overview
@@ -557,7 +557,7 @@ tags = {
 
 ## 🔮 Roadmap
 
-* [x] Grafana OSS no cluster via Helm com IRSA → Amazon Managed Prometheus (`grafana.devopsengineeracademy.com`)
+* [x] Grafana OSS no cluster via Helm com IRSA → Amazon Managed Prometheus (`grafana.guiipedroso.com`)
 * [ ] Apache Airflow on EKS (`airflow.devopsengineeracademy.com`)
 * [ ] Wildcard ACM certificate (`*.devopsengineeracademy.com`)
 * [ ] Spot instance support in Karpenter NodePool
