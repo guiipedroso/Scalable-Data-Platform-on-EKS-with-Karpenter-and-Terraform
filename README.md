@@ -65,6 +65,22 @@ Two Grafana strategies are maintained in this repository:
 
 The managed Grafana configuration is preserved as an architectural reference. For production deployments it is preferred over in-cluster Grafana: it remains available even if the EKS cluster goes down, and it integrates natively with IAM Identity Center (SSO).
 
+### Grafana Dashboards (Validated in AWS)
+
+Grafana OSS is exposed at `https://grafana.devopsengineeracademy.com`, querying **Amazon Managed Prometheus** via a SigV4 proxy sidecar with IRSA. The **Node Exporter Full** dashboard below shows live metrics from EKS worker nodes scraped end-to-end.
+
+![Grafana — Node Exporter Full overview](docs/grafana_1.png)
+
+*Overview: CPU, memory, network and disk gauges with time-series panels. Datasource: Amazon Managed Prometheus · Instance: `ip-10-0-58-179.ec2.internal` · Job: `node-exporter`.*
+
+![Grafana — Network and disk I/O](docs/grafana_2.png)
+
+*Network traffic and saturation per ENI, plus disk IOPS and throughput for `nvme0n1` — confirming the scraper is collecting host-level metrics from all worker nodes.*
+
+![Grafana — Storage disk performance](docs/grafana_3.png)
+
+*Storage disk section: read/write IOPS, data throughput, average wait time and queue size — full visibility into EKS node storage performance.*
+
 ### Networking
 
 ![VPC Topology](docs/aws_cloud.png)
@@ -214,7 +230,11 @@ eks_project/
 ├── docs/
 │   ├── arch.png                         # Full architecture diagram
 │   ├── aws_cloud.png                    # VPC/networking topology
-│   └── vpc_config.png                   # VPC logical model
+│   ├── vpc_config.png                   # VPC logical model
+│   ├── eks_scraper.png                  # Observability metrics pipeline
+│   ├── grafana_1.png                    # Grafana Node Exporter Full — overview
+│   ├── grafana_2.png                    # Grafana — network and disk I/O
+│   └── grafana_3.png                    # Grafana — storage disk performance
 │
 ├── state-backend/                       # Stack 1: S3 remote state (native lockfile)
 │   ├── main.tf
